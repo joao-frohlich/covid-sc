@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+from django.urls import reverse
 
 
 class AirwaysTypes(models.TextChoices):
@@ -37,22 +38,24 @@ class Hospital(models.Model):
     email = models.EmailField("E-mail", blank=False, max_length=254)
 
     def __str__(self):
-        return f'{self.acronym} - {self.name}'
+        return f"{self.acronym} - {self.name}"
 
+    def get_absolute_url(self):
+        return reverse("hospital_view", kwargs={"pk": self.pk})
 
 class HospitalUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     hospital = models.ForeignKey(Hospital, verbose_name="Hospital", on_delete=models.CASCADE)
 
-    REQUIRED_FIELDS = ['user', 'hospital']
+    REQUIRED_FIELDS = ["user", "hospital"]
 
     class Meta:
-        ordering = ['user__username']
-        verbose_name = 'Usuário do Hospital'
-        verbose_name_plural = 'Usuários dos Hospitais'
+        ordering = ["user__username"]
+        verbose_name = "Usuário do Hospital"
+        verbose_name_plural = "Usuários dos Hospitais"
 
     def __str__(self):
-        return f'{self.user.username} - {self.hospital.name}'
+        return f"{self.user.username} - {self.hospital.name}"
 
 
 class HospitalBed(models.Model):
@@ -60,6 +63,7 @@ class HospitalBed(models.Model):
     beds = models.CharField("Tipo do Leito", blank=False, choices=BedTypes.choices, default=BedTypes.UTIA, max_length=38)
     total = models.IntegerField("Total de leitos", blank=False, default=0)
     total_covid = models.IntegerField("Total de leitos para Covid-19", blank=False, default=0)
+
 
 class Patient(models.Model):
     hospital = models.ForeignKey(Hospital, verbose_name="Hospital", on_delete=models.CASCADE)
@@ -70,7 +74,7 @@ class Patient(models.Model):
     status = models.CharField("Status COVID", blank=False, choices=StatusTypes.choices, default=StatusTypes.S, max_length=10)
 
     hospitalization_date = models.DateField("Data de Internação", blank=False, auto_now=False, auto_now_add=False)
-    departure_date = models.DateField("Data de Saída", blank=False, auto_now=False, auto_now_add=False)
+    departure_date = models.DateField("Data de Saída", blank=True, null=True, auto_now=False, auto_now_add=False)
 
     cns = models.CharField("Carteira Nacional do SUS", blank=True, default="", max_length=30)
     sisreg = models.CharField("Número no sistema Sisreg", blank=True, default="", max_length=30)
