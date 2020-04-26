@@ -42,6 +42,12 @@ poetry run python manage.py createsuperuser
 
 ## Desenvolvimento
 
+Importar dados de desenvolvimento:
+
+```sh
+poetry run python manage.py loaddata apps/hospitals/fixtures.json
+```
+
 Executando a aplicação no ambiente local:
 
 ```sh
