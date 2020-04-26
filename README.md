@@ -48,6 +48,12 @@ Executando a aplicação no ambiente local:
 poetry run python manage.py runserver
 ```
 
+Testes
+
+```sh
+poetry run pytest -vv
+```
+
 ## Deploy
 
 ```sh

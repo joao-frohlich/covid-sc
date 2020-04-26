@@ -2,53 +2,103 @@
 
 {% block content %}
 
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        <main role="main" class="inner cover">
-            <h2>Dados Gerais:</h2>
-            <div class="container">
-                <form>
-                    <div class="form-group">
-                        <div class="form-row">
-                            <div class="col-form-label col-md-6">
-                                <label for="hospital">Hospital: </label>
-                                <input type="text" class="form-control" id="hospital" value="{{ hospital.name }}"
-                                       aria-describedby="hospital" readonly>
-                            </div>
-                            <div class="col-form-label col-md-6">
-                                <label for="city">Município: </label>
-                                <input type="text" class="form-control" id="city" value="{{ hospital.city }}"
-                                       aria-describedby="city" readonly>
-                            </div>
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <main role="main" class="inner cover">
+        <h2>Dados Gerais:</h2>
+        <div class="col-md-12">
+            <form>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-form-label col-md-6">
+                            <label for="hospital">Hospital: </label>
+                            <input type="text" class="form-control" id="hospital" value="{{ hospital.name }}"
+                                aria-describedby="hospital" readonly>
                         </div>
-                        <div class="form-row">
-                            <div class="col-form-label col-md-6">
-                                <label for="phonenumber">Telefone*:</label>
-                                <input type="text" class="form-control" id="phonenumber" aria-describedby="phonenumber"
-                                       value="{{ hospital.phonenumber }}" readonly>
-                            </div>
-                            <div class="col-form-label col-md-6">
-                                <label for="email">E-mail*:</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="email"
-                                       value="{{ hospital.email }}" readonly>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-form-label col-md-6">
-                                <label for="informant_name">Nome do Informante*:</label>
-                                <input type="text" class="form-control" id="informant_name"
-                                       aria-describedby="informant_name" value="{{ report.informant_name }}" readonly>
-                            </div>
-                            <div class="col-form-label col-md-6">
-                                <label for="informant_function">Função*:</label>
-                                <input type="text" class="form-control" id="informant_function"
-                                       aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
-                            </div>
+                        <div class="col-form-label col-md-6">
+                            <label for="city">Município: </label>
+                            <input type="text" class="form-control" id="city" value="{{ hospital.city }}"
+                                aria-describedby="city" readonly>
                         </div>
                     </div>
-                </form>
+                    <div class="form-row">
+                        <div class="col-form-label col-md-6">
+                            <label for="phonenumber">Telefone*:</label>
+                            <input type="text" class="form-control" id="phonenumber" aria-describedby="phonenumber"
+                                value="{{ hospital.phonenumber }}" readonly>
+                        </div>
+                        <div class="col-form-label col-md-6">
+                            <label for="email">E-mail*:</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="email"
+                                value="{{ hospital.email }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-form-label col-md-6">
+                            <label for="informant_name">Nome do Informante*:</label>
+                            <input type="text" class="form-control" id="informant_name"
+                                aria-describedby="informant_name" value="{{ report.informant_name }}" readonly>
+                        </div>
+                        <div class="col-form-label col-md-6">
+                            <label for="informant_function">Função*:</label>
+                            <input type="text" class="form-control" id="informant_function"
+                                aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <h2>Pacientes:</h2>
+            <div class="view">
+                <table class="table table-sm table-hover table-bordered" contenteditable="true" spellcheck="false">
+                    <thead>
+                        <tr>
+                           <th>Nome</th>
+                            <th>Data de Nascimento</th>
+                            <th>Data de Internação</th>
+                            <th>Vias Aérias</th>
+                            <th>Status covid-19</th>
+                            <th>CSN</th>
+                            <th>Sia Reg</th>
+                            <th>Data de Saída</th>
+                            <th>Motivo da Saída</th>
+                            <th>Tipo de leito</th>
+                            <th>Aguardando Vaga na UTI?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in hospital.patient_set.all %}
+                        {% if  patient.status == 'S' %}
+                            <tr class="table-warning">
+                        {% elif patient.status == 'C' %}
+                            <tr class="table-danger">
+                        {% else %}
+                            <tr class="table-success">
+                        {% endif %}
+                            <td>{{patient.name}}</td>
+                            <td>{{ patient.birthday }}</td>
+                            <td>{{ patient.hospitalization_date }}</td>
+                            <td>{{ patient.get_airways_display }}</td>
+                            <td>{{ patient.get_status_display }}</td>
+                            <td>{{ patient.cns }}</td>
+                            <td>{{ patient.sisreg }}</td>
+                            <td>{{ patient.departure_date }}</td>
+                            <td>{{ patient.get_departure_reason_display }}</td>
+    
+                            <td>{{ patient.patientbed_set.first.bed }}</td>
+                            <td>{% if patient.patientbed_set.first.waiting_uti %}
+                                Sim
+                                {% else %}
+                                Não
+                                {% endif %}
+                            </td>
+    
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
-        </main>
-    </div>
+        </div>
+       
+    </main>
+</div>
 
 {% endblock %}
