@@ -20,6 +20,6 @@ from apps.hospitals import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('hospitals/', include('apps.hospitals.urls')),
     path('', views.index),
-    path('hospitals/<int:pk>/', views.HospitalDetailView.as_view(), name ='hospital-detail'),
 ]

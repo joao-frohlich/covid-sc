@@ -4,6 +4,10 @@ body {
   height: 100%;
 }
 
+.container {
+  max-width: 1600px;
+}
+
 .registration-container {
   display: -ms-flexbox;
   display: flex;

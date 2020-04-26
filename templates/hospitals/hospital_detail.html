@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <main role="main" class="inner cover">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h2 class="float-left">Dados Gerais</h2>
+          <button type="button" class="btn btn-primary float-right">Atualizar Relatório</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form>
+            <div class="form-group">
+              <div class="form-row">
+                  <div class="col-form-label col-md-6">
+                      <label for="hospital">Hospital: </label>
+                      <input type="text" class="form-control" id="hospital" value="{{ object.name }}"
+                          aria-describedby="hospital" readonly>
+                  </div>
+                  <div class="col-form-label col-md-6">
+                      <label for="city">Município: </label>
+                      <input type="text" class="form-control" id="city" value="{{ object.city }}"
+                          aria-describedby="city" readonly>
+                  </div>
+              </div>
+              <div class="form-row">
+                  <div class="col-form-label col-md-6">
+                      <label for="phonenumber">Telefone*:</label>
+                      <input type="text" class="form-control" id="phonenumber" aria-describedby="phonenumber"
+                          value="{{ object.phonenumber }}" readonly>
+                  </div>
+                  <div class="col-form-label col-md-6">
+                      <label for="email">E-mail*:</label>
+                      <input type="email" class="form-control" id="email" aria-describedby="email"
+                          value="{{ object.email }}" readonly>
+                  </div>
+              </div>
+              <div class="form-row">
+                  <div class="col-form-label col-md-6">
+                      <label for="informant_name">Nome do Informante*:</label>
+                      <input type="text" class="form-control" id="informant_name"
+                          aria-describedby="informant_name" value="{{ report.informant_name }}" readonly>
+                  </div>
+                  <div class="col-form-label col-md-6">
+                      <label for="informant_function">Função*:</label>
+                      <input type="text" class="form-control" id="informant_function"
+                          aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h2>Pacientes</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered" contenteditable="true" spellcheck="false">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col" style="width: 300px">Nome</th>
+                  <th class="text-center" scope="col" style="width: 100px">Data de Nascimento</th>
+                  <th class="text-center" scope="col" style="width: 100px">Data de Internação</th>
+                  <th class="text-center" scope="col">Vias Aérias</th>
+                  <th class="text-center" scope="col">COVID-19</th>
+                  <th class="text-center" scope="col">CSN</th>
+                  <th class="text-center" scope="col">SiaReg</th>
+                  <th class="text-center" scope="col" style="width: 100px">Data de Saída</th>
+                  <th class="text-center" scope="col">Motivo da Saída</th>
+                  <th class="text-center" scope="col">Leito</th>
+                  <th class="text-center" scope="col">Aguardando UTI?</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for patient in object.patient_set.all %}
+                  {% if  patient.status == 'S' %}
+                    <tr class="table-warning">
+                  {% elif patient.status == 'C' %}
+                    <tr class="table-danger">
+                  {% else %}
+                    <tr class="table-success">
+                  {% endif %}
+                    <th class="text-center" scope="row">{{patient.name}}</th>
+                    <td class="text-center">{{ patient.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="text-center">{{ patient.hospitalization_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="text-center">{{ patient.get_airways_display }}</td>
+                    <td class="text-center">{{ patient.get_status_display }}</td>
+                    <td class="text-center">{{ patient.cns }}</td>
+                    <td class="text-center">{{ patient.sisreg }}</td>
+                    <td class="text-center">{{ patient.departure_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="text-center">{{ patient.get_departure_reason_display }}</td>
+                    <td class="text-center">{{ patient.patientbed_set.first.bed }}</td>
+                    <td class="text-center">{{ patient.patientbed_set.first.waiting_uti|yesno:"Sim,Não" }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h2>Ocupação de Leitos</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+
+          <form class="">
+            {% for occupation in report.occupations %}
+              {{ occupation.name }}
+            {% endfor %}
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">UTI Adulto</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">UTI Pediátrica</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">UTI Neonatal</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">Clínico Adulto</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">Clínito Pediátrico</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">Clínico Neonatal</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm" for="inlineFormCustomSelectPref">Leito com VM</label>
+              <div class="col-sm-1">
+                <input type="text" class="form-control" id="informant_function"
+                                    aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+{% endblock %}
