@@ -23,6 +23,7 @@ class HospitalAdmin(admin.ModelAdmin):
     list_display = ['upper_case_acronym', 'upper_case_name', 'city', 'phonenumber', 'email']
     ordering = ['acronym', 'name']
     search_fields = ['acronym', 'name']
+    autocomplete_fields = ['city']
 
     def upper_case_acronym(self, obj):
         return obj.acronym.upper()

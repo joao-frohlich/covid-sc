@@ -1,11 +1,18 @@
 [
   {
+    "model": "hospitals.City",
+    "pk": 1,
+    "fields": {
+      "name": "Joinville"
+    }
+  },
+  {
     "model": "hospitals.Hospital",
     "pk": 1,
     "fields": {
       "acronym": "HS",
       "name": "Hospital São José",
-      "city": "Joinville",
+      "city_id": 1,
       "phonenumber": "47 8432-1232",
       "email": "saojose@joinville.sc.br"
     }
@@ -15,7 +22,7 @@
     "fields": {
       "acronym": "HR",
       "name": "Hospital Regional de Joinville",
-      "city": "Joinville",
+      "city_id": 1,
       "phonenumber": "47 8432-1232",
       "email": "regional@sc.br"
     }

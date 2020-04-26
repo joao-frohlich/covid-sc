@@ -3,6 +3,17 @@ from django.db import models
 from django.urls import reverse
 
 
+class City(models.Model):
+    name = models.CharField("Nome", blank=False, max_length=254)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = 'Cidade'
+        verbose_name_plural = 'Cidades'
+
 class AirwaysTypes(models.TextChoices):
     VM = "VM", "Ventilação Mecânica"
     AA = "AA", "Ar Ambiente"
@@ -33,7 +44,7 @@ class BedTypes(models.TextChoices):
 class Hospital(models.Model):
     acronym = models.CharField("Sigla", blank=False, max_length=150)
     name = models.CharField("Nome", blank=False, max_length=254)
-    city = models.CharField("Cidade", blank=False, max_length=254)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     phonenumber = models.CharField("Telefone", blank=False, max_length=16)
     email = models.EmailField("E-mail", blank=False, max_length=254)
 
@@ -42,6 +53,10 @@ class Hospital(models.Model):
 
     def get_absolute_url(self):
         return reverse("hospital_view", kwargs={"pk": self.pk})
+
+    class Meta:
+        verbose_name = "Hospital"
+        verbose_name_plural = "Hospitais"
 
 class HospitalUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
