@@ -13,7 +13,7 @@ def index(request):
 class HospitalForm(ModelForm):
     class Meta:
         model = Hospital
-        fields = ["name"]
+        fields = ["name", "city", "phonenumber", "email"]
 
 
 def hospital_list(request, template_name="hospitals/hospital_list.html"):
@@ -34,6 +34,7 @@ def hospital_view(request, pk, template_name="hospitals/hospital_detail.html"):
 def hospital_update(request, pk, template_name="hospitals/hospital_form.html"):
     hospital = get_object_or_404(Hospital, pk=pk)
     form = HospitalForm(request.POST or None, instance=hospital)
+
     if form.is_valid():
         form.save()
         return redirect("hospital_list")

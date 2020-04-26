@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col">
           <h2 class="float-left">Dados Gerais</h2>
-          <button type="button" class="btn btn-primary float-right">Atualizar Relatório</button>
+          <a class="btn btn-primary float-right" href="{% url "hospital_edit" object.id %}">Atualizar Dados Gerais</a>
         </div>
       </div>
       <div class="row">
@@ -17,36 +17,36 @@
             <div class="form-group">
               <div class="form-row">
                   <div class="col-form-label col-md-6">
-                      <label for="hospital">Hospital: </label>
+                      <label for="hospital">Hospital</label>
                       <input type="text" class="form-control" id="hospital" value="{{ object.name }}"
                           aria-describedby="hospital" readonly>
                   </div>
                   <div class="col-form-label col-md-6">
-                      <label for="city">Município: </label>
+                      <label for="city">Município</label>
                       <input type="text" class="form-control" id="city" value="{{ object.city }}"
                           aria-describedby="city" readonly>
                   </div>
               </div>
               <div class="form-row">
                   <div class="col-form-label col-md-6">
-                      <label for="phonenumber">Telefone*:</label>
+                      <label for="phonenumber">Telefone</label>
                       <input type="text" class="form-control" id="phonenumber" aria-describedby="phonenumber"
                           value="{{ object.phonenumber }}" readonly>
                   </div>
                   <div class="col-form-label col-md-6">
-                      <label for="email">E-mail*:</label>
+                      <label for="email">E-mail</label>
                       <input type="email" class="form-control" id="email" aria-describedby="email"
                           value="{{ object.email }}" readonly>
                   </div>
               </div>
               <div class="form-row">
                   <div class="col-form-label col-md-6">
-                      <label for="informant_name">Nome do Informante*:</label>
+                      <label for="informant_name">Nome do Informante</label>
                       <input type="text" class="form-control" id="informant_name"
                           aria-describedby="informant_name" value="{{ report.informant_name }}" readonly>
                   </div>
                   <div class="col-form-label col-md-6">
-                      <label for="informant_function">Função*:</label>
+                      <label for="informant_function">Função</label>
                       <input type="text" class="form-control" id="informant_function"
                           aria-describedby="informant_function" value="{{ report.informant_function }}" readonly>
                   </div>
