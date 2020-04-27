@@ -44,7 +44,7 @@ class BedTypes(models.TextChoices):
 class Hospital(models.Model):
     acronym = models.CharField("Sigla", blank=False, max_length=150)
     name = models.CharField("Nome", blank=False, max_length=254)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, null=True, on_delete=models.SET_NULL)
     phonenumber = models.CharField("Telefone", blank=False, max_length=16)
     email = models.EmailField("E-mail", blank=False, max_length=254)
 
