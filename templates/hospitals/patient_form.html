@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+  {{ block.super }}
+
+  <link href="{% static 'vendor/pickadate/3.6.2/css/default.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/pickadate/3.6.2/css/default.date.css' %}" rel="stylesheet">
+{% endblock style %}
+
+{% block breadcrumbs %}
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Início</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'hospitals:list' %}">Hospitais</a></li>
+      <li class="breadcrumb-item"><a href="{{ hospital.get_absolute_url }}">{{ hospital.acronym }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Pacientes</li>
+    </ol>
+  </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <main role="main" class="inner cover">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h2>Paciente</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form method="post">
+            <form method="post"{% if form.errors %} class="was-validated"{% endif %}>
+              {% csrf_token %}
+
+              {{ form.non_field_errors }}
+
+              <div class="form-row">
+                <div class="col-form-label col-sm-9">
+                  {% include 'form/text.html' with field=form.name %}
+                </div>
+                <div class="col-form-label col-sm-3">
+                  {% include 'form/date.html' with field=form.birthday extra_class="datepicker_year" %}
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-form-label col-sm-4">
+                  {% include 'form/date.html' with field=form.hospitalization_date %}
+                </div>
+                <div class="col-form-label col-sm-4">
+                  {% include 'form/text.html' with field=form.cns %}
+                </div>
+                <div class="col-form-label col-sm-4">
+                  {% include 'form/text.html' with field=form.sisreg %}
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-form-label col-sm-3">
+                  {% include 'form/radio.html' with field=form.airways %}
+                </div>
+                <div class="col-form-label col-sm-3">
+                  {% include 'form/radio.html' with field=form.status %}
+                </div>
+                <div class="col-form-label col-sm-3">
+                  {% include 'form/radio.html' with field=form.departure_reason %}
+                </div>
+                <div class="col-form-label col-sm-3">
+                  {% include 'form/date.html' with field=form.departure_date %}
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+
+  <script src="{% static 'vendor/pickadate/3.6.2/js/picker.js' %}"></script>
+  <script src="{% static 'vendor/pickadate/3.6.2/js/picker.date.js' %}"></script>
+  <script src="{% static 'vendor/pickadate/3.6.2/js/translations/pt_BR.js' %}"></script>
+
+  <script>
+    {# mostra calendario permitindo escolher datas passadas, ate 100 anos atras #}
+    $('.datepicker_year').pickadate({format: 'dd/mm/yyyy', selectMonths: true, selectYears: 100, max: true});
+    $('.datepicker').pickadate({format: 'dd/mm/yyyy'});
+  </script>
+{% endblock javascript %}

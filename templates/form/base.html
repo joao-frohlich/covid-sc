@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+
+<div class="form-group{% if field.errors %} is-invalid{% endif %}">
+  {% include 'form/partials/label.html' %}
+
+  {% block field %}
+    {% render_field field class+="form-control" class+=extra_class placeholder=placeholder %}
+  {% endblock %}
+
+  {% include 'form/partials/footer.html' %}
+</div>

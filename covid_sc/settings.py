@@ -45,7 +45,11 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+VENDOR_APPS = [
+    'widget_tweaks',
+]
+
+INSTALLED_APPS = DJANGO_APPS + VENDOR_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
