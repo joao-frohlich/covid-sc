@@ -7,9 +7,7 @@
 
 ## Dependências
 
-- Python 3.8.0
-- Django >= 3.0
-- PostgreSQL 12.2
+- Python 3.8.2
 - Docker Compose
 
 ```sh
