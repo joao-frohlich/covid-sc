@@ -1,20 +1,20 @@
-<h1>Hospitals</h1>
+<h1>Hospitais</h1>
 
-<table border="1">
-<thead>
+<table class="table-bordered">
+  <thead>
+  <tr>
+    <th>Nome</th>
+    <th>Detalhes</th>
+    <th>Atualizar</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for hospital in object_list %}
     <tr>
-    <th>Name</th>
-    <th>View</th>
-    <th>Edit</th>
+      <td>{{ hospital.name }}</td>
+      <td><a href="{{ hospital.get_absolute_url }}">Detalhess</a></td>
+      <td><a href="{% url "hospitals:update" hospital.id %}">Atualizar</a></td>
     </tr>
-</thead>
-<tbody>
-    {% for hospital in object_list %}
-    <tr>
-    <td>{{ hospital.name }}</td>
-    <td><a href="{% url "hospital_view" hospital.id %}">view</a></td>
-    <td><a href="{% url "hospital_edit" hospital.id %}">edit</a></td>
-    </tr>
-    {% endfor %}
-</tbody>
+  {% endfor %}
+  </tbody>
 </table>

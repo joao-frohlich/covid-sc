@@ -1,10 +1,6 @@
-
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-
 
 {% block content %}
-
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
   <main role="main" class="inner cover">
     <div class="container">
@@ -17,43 +13,29 @@
         <div class="col">
           <form method="post">
             {% csrf_token %}
+
             {{ form.non_field_errors }}
 
             <div class="form-group">
               <div class="form-row">
                 <div class="col-form-label col-md-6">
-                  {{ form.name.errors }}
-                  <label for="name" class="requiredField">
-                    Hospital <span class="asteriskField">*</span>
-                  </label>
-                  <input it="name" type="text" name="name" value="{{form.name.value}}" class="form-control" maxlength="254" required>
+                  {% include 'form/text.html' with field=form.name %}
                 </div>
                 <div class="col-form-label col-md-6">
-                  {{ form.city.errors }}
-                  <label for="city" class="requiredField">
-                    Município <span class="asteriskField">*</span>
-                  </label>
-                  <input id="city" type="text" name="city" value="{{form.city.value}}" class="form-control" required>
+                  {% include 'form/select.html' with field=form.city %}
                 </div>
               </div>
               <div class="form-row">
                 <div class="col-form-label col-md-6">
-                  {{ form.phonenumber.errors }}
-                  <label for="phonenumber" class="requiredField">
-                    Telefone <span class="asteriskField">*</span>
-                  </label>
-                  <input id="phonenumber" type="text" name="phonenumber" value="{{form.phonenumber.value}}" class="form-control" required>
+                  {% include 'form/text.html' with field=form.phonenumber %}
                 </div>
                 <div class="col-form-label col-md-6">
-                  {{ form.email.errors }}
-                  <label for="email" class="requiredField">
-                    E-mail <span class="asteriskField">*</span>
-                  </label>
-                  <input id="email" type="email" name="email" value="{{form.email.value}}" class="form-control" required>
+                  {% include 'form/text.html' with field=form.email %}
                 </div>
               </div>
+            </div>
 
-            <input type="submit"class="btn btn-primary" value="Atualizar">
+            <input type="submit" class="btn btn-primary" value="Atualizar">
           </form>
         </div>
       </div>

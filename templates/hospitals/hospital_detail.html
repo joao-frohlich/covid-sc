@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col">
           <h2 class="float-left">Dados Gerais</h2>
-          <a class="btn btn-primary float-right" href="{% url "hospital_edit" object.id %}">Atualizar Dados Gerais</a>
+          <a class="btn btn-primary float-right" href="{% url "hospitals:update" object.id %}">Atualizar Dados Gerais</a>
         </div>
       </div>
       <div class="row">
@@ -57,48 +57,44 @@
       </div>
       <div class="row">
         <div class="col">
-          <h2>Pacientes</h2>
+          <h2 class="float-left">Pacientes</h2>
+          <a href="{% url "hospitals:patient_create" object.id %}" class="btn btn-primary float-right">Adicionar</a>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <div class="table-responsive">
-            <table class="table table-sm table-hover table-bordered" contenteditable="true" spellcheck="false">
+            <table class="table table-sm table-hover table-bordered" spellcheck="false">
               <thead>
-                <tr>
-                  <th class="text-center" scope="col" style="width: 300px">Nome</th>
-                  <th class="text-center" scope="col" style="width: 100px">Data de Nascimento</th>
-                  <th class="text-center" scope="col" style="width: 100px">Data de Internação</th>
-                  <th class="text-center" scope="col">Vias Aérias</th>
-                  <th class="text-center" scope="col">COVID-19</th>
-                  <th class="text-center" scope="col">CSN</th>
-                  <th class="text-center" scope="col">SiaReg</th>
-                  <th class="text-center" scope="col" style="width: 100px">Data de Saída</th>
-                  <th class="text-center" scope="col">Motivo da Saída</th>
-                  <th class="text-center" scope="col">Leito</th>
-                  <th class="text-center" scope="col">Aguardando UTI?</th>
+                <tr class="text-center">
+                  <th style="width: 300px">Nome</th>
+                  <th style="width: 100px">Data de Nascimento</th>
+                  <th style="width: 100px">Data de Internação</th>
+                  <th>Vias Aérias</th>
+                  <th>COVID-19</th>
+                  <th>CSN</th>
+                  <th>SiaReg</th>
+                  <th style="width: 100px">Data de Saída</th>
+                  <th>Motivo da Saída</th>
+                  <th>Leito</th>
+                  <th>Aguardando UTI?</th>
                 </tr>
               </thead>
               <tbody>
                 {% for patient in object.patient_set.all %}
-                  {% if  patient.status == 'S' %}
-                    <tr class="table-warning">
-                  {% elif patient.status == 'C' %}
-                    <tr class="table-danger">
-                  {% else %}
-                    <tr class="table-success">
-                  {% endif %}
-                    <th class="text-center" scope="row">{{patient.name}}</th>
-                    <td class="text-center">{{ patient.birthday|date:"SHORT_DATE_FORMAT" }}</td>
-                    <td class="text-center">{{ patient.hospitalization_date|date:"SHORT_DATE_FORMAT" }}</td>
-                    <td class="text-center">{{ patient.get_airways_display }}</td>
-                    <td class="text-center">{{ patient.get_status_display }}</td>
-                    <td class="text-center">{{ patient.cns }}</td>
-                    <td class="text-center">{{ patient.sisreg }}</td>
-                    <td class="text-center">{{ patient.departure_date|date:"SHORT_DATE_FORMAT" }}</td>
-                    <td class="text-center">{{ patient.get_departure_reason_display }}</td>
-                    <td class="text-center">{{ patient.patientbed_set.first.bed }}</td>
-                    <td class="text-center">{{ patient.patientbed_set.first.waiting_uti|yesno:"Sim,Não" }}</td>
+                  <tr
+                    class="text-center table-{% if  patient.status == 'S' %}warning{% elif patient.status == 'C' %}danger{% else %}success{% endif %}">
+                    <td><a href="{{ patient.get_absolute_url }}">{{ patient }}</a></td>
+                    <td>{{ patient.birthday|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>{{ patient.hospitalization_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>{{ patient.get_airways_display }}</td>
+                    <td>{{ patient.get_status_display }}</td>
+                    <td>{{ patient.cns }}</td>
+                    <td>{{ patient.sisreg }}</td>
+                    <td>{{ patient.departure_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>{{ patient.get_departure_reason_display }}</td>
+                    <td>{{ patient.patientbed_set.first.bed }}</td>
+                    <td>{{ patient.patientbed_set.first.waiting_uti|yesno:"Sim,Não" }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -173,4 +169,7 @@
 
         </div>
       </div>
+    </div>
+  </main>
+</div>
 {% endblock %}

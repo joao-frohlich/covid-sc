@@ -52,11 +52,12 @@ class Hospital(models.Model):
         return f"{self.acronym} - {self.name}"
 
     def get_absolute_url(self):
-        return reverse("hospital_view", kwargs={"pk": self.pk})
+        return reverse('hospitals:detail', args=[self.pk, ])
 
     class Meta:
         verbose_name = "Hospital"
         verbose_name_plural = "Hospitais"
+
 
 class HospitalUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -94,6 +95,16 @@ class Patient(models.Model):
     cns = models.CharField("Carteira Nacional do SUS", blank=True, default="", max_length=30)
     sisreg = models.CharField("Número no sistema Sisreg", blank=True, default="", max_length=30)
     departure_reason = models.CharField("Motivo da Saída", blank=True, choices=DepartureTypes.choices, default=DepartureTypes.A, max_length=5)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('hospitals:patient_update', args=[self.hospital.pk, self.pk, ])
+
+    class Meta:
+        verbose_name = "Paciente"
+        verbose_name_plural = "Pacientes"
 
 
 class PatientBed(models.Model):

@@ -1,0 +1,17 @@
+{% extends 'form/base.html' %}
+
+{% block field %}
+  {% for choice in field.field.choices %}
+    {% if field.field.required and choice.0 != '' or not field.field.required %}
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="{{ field.html_name }}" id="{{ field.auto_id }}"
+               value="{{ choice.0 }}"
+          {% if field.field.required %} required{% endif %}
+          {% if choice.0 == field.value %} checked{% endif %}>
+        <label class="form-check-label" for="{{ field.auto_id }}{{ forloop.counter }}">
+          {{ choice.1 }}
+        </label>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endblock field %}
